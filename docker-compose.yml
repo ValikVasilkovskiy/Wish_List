@@ -1,0 +1,29 @@
+version: "3.1"
+services:
+  web:
+    build: .
+    command: python /project/app/app.py
+    container_name: appserver
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+    volumes:
+      - ./:/project
+    #mem_limit: 4G
+    links:
+      - db
+    #restart: always
+
+
+  db:
+    image: mysql:5.7
+    #restart: always
+    container_name: mysqlserver
+    environment:
+      MYSQL_ROOT_PASSWORD: Pa$$w0rd
+    ports:
+      - "32000:3306"
+    #mem_limit: 2G
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d/:ro
+
