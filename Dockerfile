@@ -1,7 +1,11 @@
 FROM python:3.6
-MAINTAINER Valik Vasilkovskiy valik.vasilkovskiy@gmail.com
-RUN apt-get update -y
-RUN apt-get install -y --no-install-recommends python-setuptools python-dev
+MAINTAINER Valik Vasilkovskiy valik.vasilkovskiy@gmail.coms
+
+RUN apt update && apt install -y --no-install-recommends \
+    python-dev \
+    python-setuptools \
+    default-libmysqlclient-dev
+
 COPY . /project
 WORKDIR /project
 

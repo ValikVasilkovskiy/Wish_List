@@ -7,23 +7,47 @@ services:
     ports:
       - "5000:5000"
       - "5001:5001"
+    env_file: .env
     volumes:
       - ./:/project
-    #mem_limit: 4G
-    links:
-      - db
-    #restart: always
+#    links:
+#      - mysql
+    depends_on:
+      - mysql
+    restart: always
 
 
-  db:
-    image: mysql:5.7
-    #restart: always
-    container_name: mysqlserver
-    environment:
-      MYSQL_ROOT_PASSWORD: Pa$$w0rd
+  mysql:
+    image: mysql:8.0.2
+    env_file: .env
+    container_name: mysql
+    restart: always
     ports:
-      - "32000:3306"
-    #mem_limit: 2G
+      - "3306:3306"
+
+# BEFORE BUILD
+# List all containers (only IDs) docker ps -aq.
+# Stop all running containers. docker stop $(docker ps -aq)
+# Remove all containers. docker rm $(docker ps -aq)
+# Remove all images. docker rmi $(docker images -q)
+
     volumes:
-      - ./db:/docker-entrypoint-initdb.d/:ro
+      - ./dbdata:/var/lib/mysql  # we need to store data here in order not to loose it after container recreation
+      # NOTE this probably won't work on windows host machine, need to google it
+
+#    volumes:
+#      - ./dbdata:/var/lib/mysql
+#      - ./backups:/home/mysql/backups
+
+#  db:
+#    image: mysql:5.7
+#    #restart: always
+#    container_name: mysqlserver
+#    environment:
+#      MYSQL_ROOT_PASSWORD: Pa$$w0rd
+#    ports:
+#      - "32000:3306"
+#    #mem_limit: 2G
+#    volumes:
+#      - ./db:/docker-entrypoint-initdb.d/:ro
 
