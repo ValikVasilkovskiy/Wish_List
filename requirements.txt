@@ -1,10 +1,5 @@
-mysql-connector
 Flask
 flask_sqlalchemy
 flask_script
 flask_migrate
-sqlalchemy
-pymysql
-
-
-
+mysqlclient
