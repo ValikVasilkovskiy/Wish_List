@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 
 # Database configurations
-app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql://{os.environ["MYSQL_USER"]}:{os.environ["MYSQL_PASSWORD"]}@{os.environ["MYSQL_HOST"]}/{os.environ["MYSQL_DATABASE"]}'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://{}:{}@{}/{}'.format(os.environ["MYSQL_USER"], os.environ["MYSQL_PASSWORD"], os.environ["MYSQL_HOST"], os.environ["MYSQL_DATABASE"])
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 print(app.config['SQLALCHEMY_DATABASE_URI'])
