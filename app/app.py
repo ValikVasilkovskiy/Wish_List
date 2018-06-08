@@ -4,6 +4,9 @@ from flask_sqlalchemy import SQLAlchemy
 from flask import Flask, jsonify
 from sqlalchemy.exc import IntegrityError
 
+from views import IndexView, PrepareModel
+from model import User
+
 app = Flask(__name__)
 
 
@@ -15,39 +18,14 @@ print(app.config['SQLALCHEMY_DATABASE_URI'])
 db = SQLAlchemy(app)
 
 
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=False)
-    email = db.Column(db.String(120), unique=True)
 
-    def __init__(self, username, email):
-        self.username = username
-        self.email = email
+app.add_url_rule('/index',
+                 view_func=
+                 IndexView.as_view('index'))
 
-    def __repr__(self):
-        return '<User: {}>'.format(self.username)
-
-
-@app.route('/')
-def index():
-    db.drop_all()
-    db.create_all()
-    User.query.all()  # if no error, it means it connected to mysql server successfully
-    return 'Docker-Compose for Flask & MySQL'
-
-
-@app.route('/test')
-def test():
-    return jsonify({"users": [user.username for user in User.query.all()]})
-
-
-@app.route('/create_table')
-def createUserTable():
-    try:
-        db.create_all()
-        return jsonify({'status': True})
-    except IntegrityError:
-        return jsonify({'status': False})
+app.add_url_rule('/',
+                 view_func=
+                 PrepareModel.as_view('preparemodel'))
 
 
 @app.route('/test')
